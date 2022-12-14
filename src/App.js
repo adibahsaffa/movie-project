@@ -19,7 +19,6 @@ const App = () => {
     const response = await fetch(url);
     const responseJson = await response.json();
 
-    // console.log(responseJson);
     if (responseJson.Search) {
       setMovies(responseJson.Search);
     }
@@ -34,11 +33,13 @@ const App = () => {
       localStorage.getItem('react-movie-app-favourites')
     );
 
-    setFavourites(movieFavourites);
+    if (movieFavourites) {
+      setFavourites(movieFavourites);
+    }
   }, []);
 
   const saveToLocalStorage = (items) => {
-    localStorage.setItem('react-movie-app-favourites', JSON.stringify(items))
+    localStorage.setItem('react-movie-app-favourites', JSON.stringify(items));
   };
 
   const addFavouriteMovie = (movie) => {
@@ -56,15 +57,13 @@ const App = () => {
     saveToLocalStorage(newFavouriteList);
   };
 
-
   return (
     <div className='container-fluid movie-app'>
       <div className='row d-flex align-items-center mt-4 mb-4'>
         <MovieListHeading heading='Movies' />
         <SearchBox
           searchValue={searchValue}
-          setSearchValue={setSearchValue}
-        />
+          setSearchValue={setSearchValue} />
       </div>
       <div className='row'>
         <MovieList
@@ -79,7 +78,7 @@ const App = () => {
       <div className='row'>
         <MovieList
           movies={favourites}
-          handleFavouritesClick={addFavouriteMovie}
+          handleFavouritesClick={removeFavouriteMovie}
           favouriteComponent={RemoveFavourites}
         />
       </div>
